@@ -1,29 +1,27 @@
-# Fluent::Plugin::Json::Nest2flat
+# fluent-plugin-jsonbucket
+# Overview
 
-TODO: Write a gem description
+json_nest2flat is a fluentd output plugin.
+I will convert data into a flat data structure of JSON nested.
 
-## Installation
+ex. {“hoge”:1, “foo”:2, “data”:{"name":"taro", "age":18, "height":175}} -> ex. {“hoge”:1, “foo”:2, "name":"taro", "age":18, "height":175}
 
-Add this line to your application's Gemfile:
 
-    gem 'fluent-plugin-json-nest2flat'
+# Configuration
 
-And then execute:
+    <match pattern>
+        type json_nest2flat
+        json_keys data1,data2,data3
+    </match>
 
-    $ bundle
+# Parameters
+* json_keys
 
-Or install it yourself as:
+    It is the key that you want to convert to a flat structure from JSON nested. It is more than one can be specified in a comma-separated.
+    
+# TODO
 
-    $ gem install fluent-plugin-json-nest2flat
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+ Currently, nested structure of two or more layers will be unexpected.
+ 
+# Copyright
+Copyright:: Copyright (c) 2013- fukuiretu License:: Apache License, Version 2.0
