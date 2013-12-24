@@ -27,7 +27,7 @@ module Fluent
         end
 
         # ネストされたJSONをフラットな構造に変換します。
-        # ネストされた元のJSONは削除し、フラットな構造にした値群が差し替わります。
+        # ネストされた元のJSONは削除し、フラットな構造にした値群に差し替えます。
         # @param [Hash] old_record 元のレコード
         # @return [Hash] ネストされたJSONをフラットな構造に変換したレコード
         private
