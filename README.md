@@ -1,4 +1,4 @@
-# fluent-plugin-jsonbucket
+# fluent-plugin-json-nest2flat
 # Overview
 
 json_nest2flat is a fluentd output plugin.
