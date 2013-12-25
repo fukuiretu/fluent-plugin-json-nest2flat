@@ -1,8 +1,8 @@
 # coding: utf-8
 Gem::Specification.new do |spec|
   spec.name          = "fluent-plugin-json-nest2flat"
-  spec.version       = "0.0.1"
-  spec.authors       = ["FukuiRetu"]
+  spec.version       = "0.0.2"
+  spec.authors       = ["Fukui ReTu"]
   spec.email         = ["s0232101@gmail.com"]
   spec.description   = %q{Output filter plugin to convert to a flat structure the JSON that is nest}
   spec.summary       = %q{Output filter plugin to convert to a flat structure the JSON that is nest}

@@ -3,6 +3,7 @@ module Fluent
 
         Fluent::Plugin.register_output('json_nest2flat', self)
 
+        config_param :tag, :string, :default => 'json_nest2flat'
         config_param :json_keys, :string, :default => nil
 
         def configure(conf)
@@ -13,6 +14,7 @@ module Fluent
                 raise Fluent::ConfigError, "json_keys is undefined!"
             end
 
+            @tag = conf['tag']
             @json_keys = @json_keys.split(",")
         end
 
@@ -22,7 +24,7 @@ module Fluent
 
                 new_record = _convert_record(record);
 
-                Fluent::Engine.emit(tag, time, new_record)
+                Fluent::Engine.emit(@tag, time, new_record)
             }
         end
 
@@ -48,7 +50,7 @@ module Fluent
                 end
             }
 
-            unless json_keys_exist_count > 0
+            unless json_keys_exist_count == 0
                 $log.warn "json_keys is not found."
             end
 
