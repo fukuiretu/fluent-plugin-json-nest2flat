@@ -11,14 +11,19 @@ ex. {“hoge”:1, “foo”:2, “data”:{"name":"taro", "age":18, "height":17
 
     <match pattern>
         type json_nest2flat
+        tag json_nest2flat.finished
         json_keys data1,data2,data3
     </match>
 
 # Parameters
+* tag
+
+    The output tag. Default is json_nest2flat.
+
 * json_keys
 
     It is the key that you want to convert to a flat structure from JSON nested. It is more than one can be specified in a comma-separated.
-    
+
 # TODO
 
  Currently, nested structure of two or more layers will be unexpected.
