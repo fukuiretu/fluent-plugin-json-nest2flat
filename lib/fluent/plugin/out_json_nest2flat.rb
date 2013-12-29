@@ -3,7 +3,8 @@ module Fluent
 
         Fluent::Plugin.register_output('json_nest2flat', self)
 
-        config_param :tag, :string, :default => 'json_nest2flat'
+        config_param :tag, :string, :default => nil
+        config_param :add_tag_prefix, :string, :default => nil
         config_param :json_keys, :string, :default => nil
 
         def configure(conf)
@@ -11,10 +12,20 @@ module Fluent
 
             @json_keys = conf['json_keys']
             if @json_keys.nil?
-                raise Fluent::ConfigError, "json_keys is undefined!"
+                raise Fluent::ConfigError, "json_keys is required!"
             end
 
             @tag = conf['tag']
+            @add_tag_prefix = conf['add_tag_prefix']
+            if @tag.nil? && @add_tag_prefix.nil?
+                raise Fluent::ConfigError, "tag or add_tag_prefix is required!"
+            end
+
+            @enabled_tag = false
+            if !@tag.nil?
+                @enabled_tag = true
+            end
+
             @json_keys = @json_keys.split(",")
         end
 
@@ -24,7 +35,11 @@ module Fluent
 
                 new_record = _convert_record(record);
 
-                Fluent::Engine.emit(@tag, time, new_record)
+                if @enabled_tag
+                    Fluent::Engine.emit(@tag, time, new_record)
+                else
+                    Fluent::Engine.emit("#{@add_tag_prefix}.#{tag}", time, new_record)
+                end 
             }
         end
 
@@ -50,7 +65,7 @@ module Fluent
                 end
             }
 
-            unless json_keys_exist_count == 0
+            unless json_keys_exist_count > 0
                 $log.warn "json_keys is not found."
             end
 
