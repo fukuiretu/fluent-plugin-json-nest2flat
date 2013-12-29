@@ -9,6 +9,7 @@ ex. {"hoge":1, "foo":2, "data":{"name":"taro", "age":18, "height":175}} -> ex. {
 
 # Configuration
 ex1.
+
     <match pattern>
         type json_nest2flat
         tag json_nest2flat.finished
@@ -17,6 +18,7 @@ ex1.
 
 
 ex2.
+
     <match pattern>
         type json_nest2flat
         add_tag_prefix json_nest2flat
