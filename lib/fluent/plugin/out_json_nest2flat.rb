@@ -43,7 +43,12 @@ module Fluent
             es.each { |time, record|
                 chain.next
 
-                new_record = _convert_record(record);
+                new_record = nil
+                begin
+                    new_record = _convert_record(record);
+                rescue => e
+                    $log.error "json_data is parse error.", :error=>e.to_s
+                end
 
                 if @enabled_tag
                     Fluent::Engine.emit(@tag, time, new_record)
@@ -65,23 +70,17 @@ module Fluent
             old_record.each { |old_record_k, old_record_v|
                 if @json_keys.include?(old_record_k)
                     json_data = old_record[old_record_k]
-                    begin
-                        JSON.parse(json_data).each { |json_k, json_v|
-                            if @ignore_item_keys.include?(old_record_k)
-                                # 無視するキーに該当
-                                ignore_items = @ignore_item_keys[old_record_k]
-                                if ignore_items.include?(json_k)
-                                    # 無視するアイテムに該当するのでハッシュに含まない
-                                    next
-                                end
+                    JSON.parse(json_data).each { |json_k, json_v|
+                        if @ignore_item_keys.include?(old_record_k)
+                            # 無視するキーに該当
+                            ignore_items = @ignore_item_keys[old_record_k]
+                            if ignore_items.include?(json_k)
+                                # 無視するアイテムに該当するのでハッシュに含まない
+                                next
                             end
-                            new_record[json_k] = json_v
-                        }
-                    rescue => e
-                        $log.error "json_data is parse error.json_data=#{json_data}", :error=>e.to_s
-                        raise
-                    end
-
+                        end
+                        new_record[json_k] = json_v
+                    }
                     json_keys_exist_count += 1
                 else
                     new_record[old_record_k] = old_record_v
