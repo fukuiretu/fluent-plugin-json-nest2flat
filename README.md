@@ -10,20 +10,52 @@ ex. {"hoge":1, "foo":2, "data":{"name":"taro", "age":18, "height":175}} -> ex. {
 # Configuration
 ex1.
 
-    <match pattern>
+    <match example>
         type json_nest2flat
         tag json_nest2flat.finished
         json_keys data1,data2,data3
     </match>
 
+in
+
+example: {"name":"taro","age":"17","data1":{"a":"b"},"data2":{"c":"d"},"data3":{"e":"f"}}
+
+out
+
+json_nest2flat.finished: {"name":"taro","age":"17","a":"b","c":"d","e":"f"}
 
 ex2.
 
-    <match pattern>
+    <match example>
         type json_nest2flat
         add_tag_prefix json_nest2flat
         json_keys data1,data2,data3
     </match>
+
+in
+
+example: {"name":"taro","age":"17","data1":{"a":"b"},"data2":{"c":"d"},"data3":{"e":"f"}}
+
+out
+
+json_nest2flat.example: {"name":"taro","age":"17","a":"b","c":"d","e":"f"}
+
+ex3.
+
+    <match example>
+        type json_nest2flat
+        add_tag_prefix json_nest2flat
+        json_keys data1
+        ignore_item_keys {"data1":["b","c","d"]}
+    </match>
+
+in
+
+example: {"name":"taro","age":"17","data1":{"a":"b","b":"c","c":"d","d":"e","e":"f"}}
+
+out
+
+json_nest2flat.example: {"name":"taro","age":"17","a":"b","e":"f"}
 
 # Parameters
 * tag
@@ -37,6 +69,11 @@ ex2.
 * json_keys
 
     It is the key that you want to convert to a flat structure from JSON nested. It is more than one can be specified in a comma-separated.
+
+* ignore_item_keys
+
+    You specify the item that you want to ignore the key that is specified in the "json_keys". The format is JSON format. Please refer to the section of "Configuration" example of setting.
+    
 
 # TODO
 
