@@ -1,4 +1,4 @@
-# fluent-plugin-json-nest2flat
+# fluent-plugin-json-nest, a plugin for [Fluentd](http://fluentd.org)2flat
 # Overview
 
 json_nest2flat is a fluentd output plugin.I will convert data into a flat data structure of JSON nested.
