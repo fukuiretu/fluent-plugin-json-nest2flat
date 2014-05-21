@@ -1,13 +1,13 @@
 # coding: utf-8
 Gem::Specification.new do |spec|
   spec.name          = "fluent-plugin-json-nest2flat"
-  spec.version       = "0.0.4"
+  spec.version       = "0.0.5"
   spec.authors       = ["Fukui ReTu"]
   spec.email         = ["s0232101@gmail.com"]
   spec.description   = %q{Output filter plugin to convert to a flat structure the JSON that is nest}
   spec.summary       = %q{Output filter plugin to convert to a flat structure the JSON that is nest}
   spec.homepage      = "https://github.com/fukuiretu/fluent-plugin-json-nest2flat"
-  spec.license       = "Apache"
+  spec.license       = "APL2.0"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
