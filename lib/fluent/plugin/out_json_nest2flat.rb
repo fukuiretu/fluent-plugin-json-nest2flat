@@ -71,12 +71,14 @@ module Fluent
                 if @json_keys.include?(old_record_k)
                     json_data = old_record[old_record_k]
                     JSON.parse(json_data).each { |json_k, json_v|
-                        if @ignore_item_keys.include?(old_record_k)
-                            # 無視するキーに該当
-                            ignore_items = @ignore_item_keys[old_record_k]
-                            if ignore_items.include?(json_k)
-                                # 無視するアイテムに該当するのでハッシュに含まない
-                                next
+                        if !@ignore_item_keys.nil?
+                            if @ignore_item_keys.include?(old_record_k)
+                                # 無視するキーに該当
+                                ignore_items = @ignore_item_keys[old_record_k]
+                                if ignore_items.include?(json_k)
+                                    # 無視するアイテムに該当するのでハッシュに含まない
+                                    next
+                                end
                             end
                         end
                         new_record[json_k] = json_v
