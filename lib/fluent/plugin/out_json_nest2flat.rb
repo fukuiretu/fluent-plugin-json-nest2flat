@@ -1,6 +1,12 @@
+# coding: utf-8
 module Fluent
     class JsonNestToFlatOutput < Fluent::Output
         Fluent::Plugin.register_output('json_nest2flat', self)
+
+        # Define `router` method of v0.12 to support v0.10 or earlier
+        unless method_defined?(:router)
+            define_method("router") { Fluent::Engine }
+        end
 
         config_param :tag, :string, :default => nil
         config_param :add_tag_prefix, :string, :default => nil
@@ -51,10 +57,10 @@ module Fluent
                 end
 
                 if @enabled_tag
-                    Fluent::Engine.emit(@tag, time, new_record)
+                    router.emit(@tag, time, new_record)
                 else
-                    Fluent::Engine.emit("#{@add_tag_prefix}.#{tag}", time, new_record)
-                end 
+                    router.emit("#{@add_tag_prefix}.#{tag}", time, new_record)
+                end
             }
         end
 
@@ -70,7 +76,8 @@ module Fluent
             old_record.each { |old_record_k, old_record_v|
                 if @json_keys.include?(old_record_k)
                     json_data = old_record[old_record_k]
-                    JSON.parse(json_data).each { |json_k, json_v|
+                    json_data = JSON.parse(json_data) if json_data.is_a?(String)
+                    json_data.each { |json_k, json_v|
                         if !@ignore_item_keys.nil?
                             if @ignore_item_keys.include?(old_record_k)
                                 # 無視するキーに該当
