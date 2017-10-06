@@ -76,7 +76,8 @@ module Fluent
             old_record.each { |old_record_k, old_record_v|
                 if @json_keys.include?(old_record_k)
                     json_data = old_record[old_record_k]
-                    JSON.parse(json_data).each { |json_k, json_v|
+                    json_data = JSON.parse(json_data) if json_data.is_a?(String)
+                    json_data.each { |json_k, json_v|
                         if !@ignore_item_keys.nil?
                             if @ignore_item_keys.include?(old_record_k)
                                 # 無視するキーに該当
