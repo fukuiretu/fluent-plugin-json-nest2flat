@@ -1,6 +1,12 @@
+# coding: utf-8
 module Fluent
     class JsonNestToFlatOutput < Fluent::Output
         Fluent::Plugin.register_output('json_nest2flat', self)
+
+        # Define `router` method of v0.12 to support v0.10 or earlier
+        unless method_defined?(:router)
+            define_method("router") { Fluent::Engine }
+        end
 
         config_param :tag, :string, :default => nil
         config_param :add_tag_prefix, :string, :default => nil
@@ -51,10 +57,10 @@ module Fluent
                 end
 
                 if @enabled_tag
-                    Fluent::Engine.emit(@tag, time, new_record)
+                    router.emit(@tag, time, new_record)
                 else
-                    Fluent::Engine.emit("#{@add_tag_prefix}.#{tag}", time, new_record)
-                end 
+                    router.emit("#{@add_tag_prefix}.#{tag}", time, new_record)
+                end
             }
         end
 
